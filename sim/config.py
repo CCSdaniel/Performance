@@ -18,11 +18,31 @@ def _build_triplet(data: dict[str, float], field_name: str) -> ProfileTriplet:
     )
 
 
+def _build_profile_times(raw: dict[str, float], t_landing_s: float) -> ProfileTriplet:
+    required = ("takeoff", "throttle_down")
+    missing = [k for k in required if k not in raw]
+    if missing:
+        raise ValueError(f"Missing keys in 'profile_times_s': {missing}")
+
+    if "landing" in raw and float(raw["landing"]) != t_landing_s:
+        raise ValueError(
+            "If profile_times_s.landing is provided it must match t_landing_s. "
+            "Use t_landing_s as the interpolation endpoint time."
+        )
+
+    return ProfileTriplet(
+        takeoff=float(raw["takeoff"]),
+        throttle_down=float(raw["throttle_down"]),
+        landing=float(t_landing_s),
+    )
+
+
 def load_simulation_config(path: str | Path) -> SimulationConfig:
     config_path = Path(path)
     raw = json.loads(config_path.read_text(encoding="utf-8"))
 
-    profile_times = _build_triplet(raw["profile_times_s"], "profile_times_s")
+    t_landing_s = float(raw["t_landing_s"])
+    profile_times = _build_profile_times(raw["profile_times_s"], t_landing_s)
     mass_profile = _build_triplet(raw["mass_profile_kg"], "mass_profile_kg")
     cg_profile = _build_triplet(raw["cg_profile_m"], "cg_profile_m")
     moi_profile = _build_triplet(raw["moi_profile_kg_m2"], "moi_profile_kg_m2")
@@ -42,6 +62,7 @@ def load_simulation_config(path: str | Path) -> SimulationConfig:
     cfg = SimulationConfig(
         gravity_m_s2=float(raw["gravity_m_s2"]),
         throttling_time_s=float(raw["throttling_time_s"]),
+        t_landing_s=t_landing_s,
         max_thrust_n=float(raw["max_thrust_n"]),
         throttled_thrust_n=float(raw["throttled_thrust_n"]),
         profile_times_s=profile_times,
@@ -57,6 +78,8 @@ def load_simulation_config(path: str | Path) -> SimulationConfig:
         raise ValueError("throttled_thrust_n must be <= max_thrust_n.")
     if cfg.gravity_m_s2 <= 0.0:
         raise ValueError("gravity_m_s2 must be > 0.")
+    if cfg.t_landing_s <= cfg.profile_times_s.takeoff:
+        raise ValueError("t_landing_s must be greater than profile_times_s.takeoff.")
     if min(cfg.mass_profile_kg.takeoff, cfg.mass_profile_kg.throttle_down, cfg.mass_profile_kg.landing) <= 0.0:
         raise ValueError("All mass profile values must be > 0.")
 

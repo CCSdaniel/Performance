@@ -20,7 +20,8 @@ The model includes **gravity + engine thrust** and intentionally excludes aerody
   - takeoff
   - throttle-down
   - landing
-  and interpolated linearly in between.
+  and interpolated linearly in between. The final interpolation time is explicitly
+  set by `t_landing_s` (this is not enforced touchdown time).
 
 ## Project structure
 
@@ -70,9 +71,10 @@ Edit `config/rocket_hopper_config.json`:
 
 - `gravity_m_s2`
 - `throttling_time_s`
+- `t_landing_s` (time used for the last mass/CG/MoI interpolation point)
 - `max_thrust_n`
 - `throttled_thrust_n`
-- `profile_times_s` (`takeoff`, `throttle_down`, `landing`)
+- `profile_times_s` (`takeoff`, `throttle_down`)
 - `mass_profile_kg` (`takeoff`, `throttle_down`, `landing`)
 - `cg_profile_m` (`takeoff`, `throttle_down`, `landing`)
 - `moi_profile_kg_m2` (`takeoff`, `throttle_down`, `landing`)

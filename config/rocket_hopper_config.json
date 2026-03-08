@@ -1,12 +1,12 @@
 {
   "gravity_m_s2": 9.81,
   "throttling_time_s": 12.0,
+  "t_landing_s": 60.0,
   "max_thrust_n": 180000.0,
   "throttled_thrust_n": 65000.0,
   "profile_times_s": {
     "takeoff": 0.0,
-    "throttle_down": 12.0,
-    "landing": 55.0
+    "throttle_down": 12.0
   },
   "mass_profile_kg": {
     "takeoff": 12000.0,

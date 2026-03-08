@@ -27,6 +27,7 @@ class IntegrationConfig:
 class SimulationConfig:
     gravity_m_s2: float
     throttling_time_s: float
+    t_landing_s: float
     max_thrust_n: float
     throttled_thrust_n: float
     profile_times_s: ProfileTriplet
