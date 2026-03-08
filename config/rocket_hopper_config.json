@@ -1,0 +1,30 @@
+{
+  "gravity_m_s2": 9.81,
+  "throttling_time_s": 12.0,
+  "max_thrust_n": 180000.0,
+  "throttled_thrust_n": 65000.0,
+  "profile_times_s": {
+    "takeoff": 0.0,
+    "throttle_down": 12.0,
+    "landing": 55.0
+  },
+  "mass_profile_kg": {
+    "takeoff": 12000.0,
+    "throttle_down": 9500.0,
+    "landing": 8000.0
+  },
+  "cg_profile_m": {
+    "takeoff": 2.35,
+    "throttle_down": 2.1,
+    "landing": 1.85
+  },
+  "moi_profile_kg_m2": {
+    "takeoff": 64000.0,
+    "throttle_down": 52000.0,
+    "landing": 46000.0
+  },
+  "integration": {
+    "dt_s": 0.02,
+    "max_time_s": 120.0
+  }
+}

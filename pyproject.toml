@@ -1,0 +1,26 @@
+[project]
+name = "rocket-hopper-sim"
+version = "0.1.0"
+description = "2D flight trajectory simulator for a vertical rocket hopper demonstrator."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "matplotlib",
+    "numpy",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["sim*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
